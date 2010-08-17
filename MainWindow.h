@@ -18,6 +18,9 @@ public:
 	QLineEdit * passwordLineEdit() const { Q_ASSERT(m_passwordLineEdit); return m_passwordLineEdit; }
 	QLineEdit * hashLineEdit() const { Q_ASSERT(m_hashLineEdit); return m_hashLineEdit; }
 
+	QString dbFileName() const;
+	void setDbFileName(const QString &val) { m_dbFileName = val; }
+
 private slots:
 	void syncHashLineEdit();
 	void readKnowns();
@@ -34,6 +37,8 @@ private:
 	QLineEdit *m_knownHashLineEdit;
 	QLineEdit *m_passwordLineEdit;
 	QLineEdit *m_hashLineEdit;
+
+	QString m_dbFileName;
 
 #define A(NAME) \
 	QAction *m_##NAME##Action; \

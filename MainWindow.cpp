@@ -87,6 +87,19 @@ MainWindow::MainWindow(QWidget *parent)
 	setup();
 }
 
+QString
+MainWindow::dbFileName() const
+{
+	if (!m_dbFileName.isEmpty())
+		return m_dbFileName;
+
+	const QString defaultDbFileName
+		= QDir::homePath()
+		+ "/.config/google-chrome/Default/Sync Data/BookmarkSyncSettings.sqlite3";
+
+	return defaultDbFileName;
+}
+
 // ----------------------------------------------------------------------
 // -privates-slots
 
@@ -106,27 +119,30 @@ MainWindow::syncHashLineEdit()
 void
 MainWindow::readKnowns()
 {
-	const QString defaultFileName = QDir::toNativeSeparators(s("%1/%2")
-		.arg(QDir::homePath())
-		.arg("/.config/google-chrome/Default/Sync Data/BookmarkSyncSettings.sqlite3"));
+	// Get DB file name
+	{
+		const QString fileName
+			= QFileDialog::getOpenFileName(this,
+				tr("Open File"), dbFileName(),
+				tr("SQLite3 Files (*.sqlite3);;All Files (*)"));
+		if (fileName.isEmpty())
+			return;
 
-	const QString fileName = QFileDialog::getOpenFileName(this,
-		tr("Open File"), defaultFileName,
-		tr("SQLite3 Files (*.sqlite3);;All Files (*)"));
-	if (fileName.isEmpty()) {
-		return;
+		setDbFileName(fileName);
 	}
 
 	const QString dbName = "BookmarkSyncSettings";
 
+	// Open DB
 	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", dbName);
-	db.setDatabaseName(fileName);
+	db.setDatabaseName(dbFileName());
 	if (!db.open()) {
 		QMessageBox::warning(this, tr("Database Open Failed"),
 			db.lastError().text());
 		return;
 	}
 
+	// Read settings
 	{
 		QSqlQuery q(db);
 

@@ -4,7 +4,6 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
-#include <QtGui/QPushButton>
 
 namespace {
 

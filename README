@@ -1,0 +1,46 @@
+gpra -- Gmail Password Recovery Assistant
+#########################################
+
+Checks your password from gmail account at the time when you type it.
+
+	,-------------------------------------------.
+	| Known Salt  [___________________________] |
+	| Known Hash  [___________________________] |
+	| Password    [___________________________] |
+	| Hash        [___________________________] |
+	`-------------------------------------------'
+
+Usage
+=====
+
+In order to make the tool useful you need google-chrome browser with the
+"Sync" option turned on.  This is because you need to extract
+"Known Salt" and "Known Hash" values from  google-chrome settings:
+
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	$ cd ~/.config/google-chrome/Default/Sync Data
+	$ sqlite3 BookmarkSyncSettings.sqlite3
+	jsmith@gmail.com|password_hash2|63126
+	jsmith@gmail.com|salt2|INHNIHKCJBPEKLFJGNAGEJBDECFKOCOIOBHGBAOM
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	'password_hash2' is your "Known Hash"
+	'salt2' is your "Known Salt"
+
+After filling up "Known Hash" and "Known Salt" fields you can start
+typing passwords.  If you guessed password the program pops up dialog
+informing you about that:
+
+	,-----------------------.
+	|                       |
+	|  Congradulation!      |
+	|                       |
+	|  The hashes matches!  |
+	|                       |
+	|                 [OK]  |
+	`-----------------------'
+
+Hint:
+	The password for abovementioned "Known Hash" and "Known Salt" is
+	'foobar'.
+

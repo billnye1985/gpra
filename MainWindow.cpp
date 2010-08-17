@@ -149,7 +149,7 @@ MainWindow::readKnowns()
 		// password_hash
 		if (!q.exec("SELECT value FROM settings WHERE key='password_hash2'")) {
 			QMessageBox::warning(this,
-				tr("Querying 'password_hash2' failed"),
+				tr("Retrieving 'password_hash2' failed"),
 				q.lastError().text());
 		}
 		else {
@@ -160,7 +160,7 @@ MainWindow::readKnowns()
 		// salt2
 		if (!q.exec("SELECT value FROM settings WHERE key='salt2'")) {
 			QMessageBox::warning(this,
-				tr("Querying 'salt2' failed"),
+				tr("Retrieving 'salt2' failed"),
 				q.lastError().text());
 		}
 		else {

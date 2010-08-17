@@ -1,0 +1,6 @@
+*.o
+*.pro
+Makefile
+go_settings.inc
+moc_*
+gpra

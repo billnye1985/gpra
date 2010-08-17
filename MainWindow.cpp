@@ -223,7 +223,7 @@ MainWindow::setupActions()
 	quitAction()->setShortcut(QKeySequence::Quit);
 	connect(
 		quitAction(), SIGNAL(triggered()),
-		qApp, SLOT(quit()));
+		this, SLOT(close()));
 
 	Q_ASSERT(m_aboutQtAction == 0);
 	m_aboutQtAction = new QAction(this);

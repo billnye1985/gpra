@@ -20,9 +20,13 @@ public:
 
 private slots:
 	void syncHashLineEdit();
+	void readKnowns();
+	void about();
 
 private:
 	void setup();
+	void setupActions();
+	void setupMenus();
 	void setupWidgets();
 	void setupCentralWidget();
 
@@ -30,6 +34,16 @@ private:
 	QLineEdit *m_knownHashLineEdit;
 	QLineEdit *m_passwordLineEdit;
 	QLineEdit *m_hashLineEdit;
+
+#define A(NAME) \
+	QAction *m_##NAME##Action; \
+	QAction * NAME##Action() const { Q_ASSERT(m_##NAME##Action); return m_##NAME##Action; }
+
+	A(readKnowns)
+	A(quit)
+	A(aboutQt)
+	A(about)
+#undef A
 };
 
 #endif // #ifndef MAINWINDOW_H

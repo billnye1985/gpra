@@ -3,6 +3,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLineEdit>
+#include <QtGui/QMenuBar>
 #include <QtGui/QMessageBox>
 
 namespace {
@@ -72,6 +73,11 @@ MainWindow::MainWindow(QWidget *parent)
 	, m_knownHashLineEdit(0)
 	, m_passwordLineEdit(0)
 	, m_hashLineEdit(0)
+
+	, m_readKnownsAction(0)
+	, m_quitAction(0)
+	, m_aboutQtAction(0)
+	, m_aboutAction(0)
 #endif
 {
 	setup();
@@ -93,17 +99,80 @@ MainWindow::syncHashLineEdit()
 			tr("Congradulation!\n\nThe hashes matches!"));
 }
 
+void
+MainWindow::readKnowns()
+{
+	QMessageBox::critical(this, tr("Not Implemented"),
+		tr("readKnownsAction() Not Implemented"));
+}
+
+void
+MainWindow::about()
+{
+	QMessageBox::critical(this, tr("Not Implemented"),
+		tr("about() Not Implemented"));
+}
+
 // ----------------------------------------------------------------------
 // -private
 
 void
 MainWindow::setup()
 {
+	setupActions();
+	setupMenus();
 	setupWidgets();
 	setupCentralWidget();
 	setWindowTitle(s("%1 %2")
 		.arg(qApp->applicationName())
 		.arg(qApp->applicationVersion()));
+}
+
+void
+MainWindow::setupActions()
+{
+	Q_ASSERT(m_readKnownsAction == 0);
+	m_readKnownsAction = new QAction(this);
+	readKnownsAction()->setText(tr("&Read Knowns"));
+	readKnownsAction()->setShortcut(tr("Ctrl+R"));
+	connect(
+		readKnownsAction(), SIGNAL(triggered()),
+		this, SLOT(readKnowns()));
+
+	Q_ASSERT(m_quitAction == 0);
+	m_quitAction = new QAction(this);
+	quitAction()->setText(tr("&Quit"));
+	quitAction()->setShortcut(QKeySequence::Quit);
+	connect(
+		quitAction(), SIGNAL(triggered()),
+		qApp, SLOT(quit()));
+
+	Q_ASSERT(m_aboutQtAction == 0);
+	m_aboutQtAction = new QAction(this);
+	aboutQtAction()->setText(tr("About &Qt"));
+	connect(
+		aboutQtAction(), SIGNAL(triggered()),
+		qApp, SLOT(aboutQt()));
+
+	Q_ASSERT(m_aboutAction == 0);
+	m_aboutAction = new QAction(this);
+	aboutAction()->setText(tr("&About"));
+	connect(
+		aboutAction(), SIGNAL(triggered()),
+		this, SLOT(about()));
+}
+
+void
+MainWindow::setupMenus()
+{
+	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+	fileMenu->addAction(readKnownsAction());
+	fileMenu->addSeparator();
+	fileMenu->addAction(quitAction());
+
+	QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
+	helpMenu->addAction(aboutQtAction());
+	helpMenu->addAction(aboutAction());
 }
 
 void

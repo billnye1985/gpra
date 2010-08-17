@@ -1,17 +1,17 @@
-#ifndef MAINWIDGET_H
-#define MAINWIDGET_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QMainWindow>
 
 class QLineEdit;
 
 // ----------------------------------------------------------------------
-// -MainWidget
+// -MainWindow
 
-class MainWidget : public QWidget {
+class MainWindow : public QMainWindow {
 	Q_OBJECT
 public:
-	MainWidget(QWidget *parent = 0);
+	MainWindow(QWidget *parent = 0);
 
 	QLineEdit * knownSaltLineEdit() const { Q_ASSERT(m_knownSaltLineEdit); return m_knownSaltLineEdit; }
 	QLineEdit * knownHashLineEdit() const { Q_ASSERT(m_knownHashLineEdit); return m_knownHashLineEdit; }
@@ -24,6 +24,7 @@ private slots:
 private:
 	void setup();
 	void setupWidgets();
+	void setupCentralWidget();
 
 	QLineEdit *m_knownSaltLineEdit;
 	QLineEdit *m_knownHashLineEdit;
@@ -31,4 +32,4 @@ private:
 	QLineEdit *m_hashLineEdit;
 };
 
-#endif // #ifndef MAINWIDGET_H
+#endif // #ifndef MAINWINDOW_H

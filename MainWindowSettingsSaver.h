@@ -1,17 +1,17 @@
-#ifndef MAINWIDGETSETTINGSSAVER_H
-#define MAINWIDGETSETTINGSSAVER_H
+#ifndef MAINWINDOWSETTINGSSAVER_H
+#define MAINWINDOWSETTINGSSAVER_H
 
 #include <QtCore/QObject>
 
-class MainWidget;
+class MainWindow;
 
 // ----------------------------------------------------------------------
-// -MainWidgetSettingsSaver
+// -MainWindowSettingsSaver
 
-class MainWidgetSettingsSaver : public QObject {
+class MainWindowSettingsSaver : public QObject {
 	Q_OBJECT
 public:
-	MainWidgetSettingsSaver(MainWidget *mainWidget);
+	MainWindowSettingsSaver(MainWindow *mainWindow);
 
 	/* virtual */ bool eventFilter(QObject *recipient, QEvent *e);
 
@@ -21,8 +21,8 @@ private:
 	void saveSettings();
 	void loadSettings();
 
-	MainWidget *m_mainWidget;
-	MainWidget * mainWidget() const { Q_ASSERT(m_mainWidget); return m_mainWidget; }
+	MainWindow *m_mainWindow;
+	MainWindow * mainWindow() const { Q_ASSERT(m_mainWindow); return m_mainWindow; }
 };
 
-#endif // #ifndef MAINWIDGETSETTINGSSAVER_H
+#endif // #ifndef MAINWINDOWSETTINGSSAVER_H

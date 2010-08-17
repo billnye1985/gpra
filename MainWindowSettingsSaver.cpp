@@ -1,5 +1,5 @@
-#include "MainWidget.h"
-#include "MainWidgetSettingsSaver.h"
+#include "MainWindow.h"
+#include "MainWindowSettingsSaver.h"
 #include <QtCore/QEvent>
 #include <QtCore/QSettings>
 #include <QtGui/QLineEdit>
@@ -7,15 +7,15 @@
 // ----------------------------------------------------------------------
 // -public
 
-MainWidgetSettingsSaver::MainWidgetSettingsSaver(MainWidget *mainWidgetArg)
-	: QObject(mainWidgetArg)
-	, m_mainWidget(mainWidgetArg)
+MainWindowSettingsSaver::MainWindowSettingsSaver(MainWindow *mainWindowArg)
+	: QObject(mainWindowArg)
+	, m_mainWindow(mainWindowArg)
 {
 	setup();
 }
 
 bool
-MainWidgetSettingsSaver::eventFilter(QObject *recipient, QEvent *e)
+MainWindowSettingsSaver::eventFilter(QObject *recipient, QEvent *e)
 {
 	if (e->type() == QEvent::Close) {
 		saveSettings();
@@ -27,33 +27,33 @@ MainWidgetSettingsSaver::eventFilter(QObject *recipient, QEvent *e)
 // -private
 
 void
-MainWidgetSettingsSaver::setup()
+MainWindowSettingsSaver::setup()
 {
-	mainWidget()->installEventFilter(this);
+	mainWindow()->installEventFilter(this);
 	loadSettings();
 }
 
 void
-MainWidgetSettingsSaver::loadSettings()
+MainWindowSettingsSaver::loadSettings()
 {
 	QSettings settings;
 
-	mainWidget()->restoreGeometry(settings.value("mainWidget.geometry").toByteArray());
-	mainWidget()->knownSaltLineEdit()->setText(settings.value("mainWidget.knownSaltLineEdit.text").toString());
-	mainWidget()->knownHashLineEdit()->setText(settings.value("mainWidget.knownHashLineEdit.text").toString());
-	mainWidget()->passwordLineEdit()->setText(settings.value("mainWidget.passwordLineEdit.text").toString());
+	mainWindow()->restoreGeometry(settings.value("mainWindow.geometry").toByteArray());
+	mainWindow()->knownSaltLineEdit()->setText(settings.value("mainWindow.knownSaltLineEdit.text").toString());
+	mainWindow()->knownHashLineEdit()->setText(settings.value("mainWindow.knownHashLineEdit.text").toString());
+	mainWindow()->passwordLineEdit()->setText(settings.value("mainWindow.passwordLineEdit.text").toString());
 
-	mainWidget()->passwordLineEdit()->selectAll();
-	mainWidget()->passwordLineEdit()->setFocus();
+	mainWindow()->passwordLineEdit()->selectAll();
+	mainWindow()->passwordLineEdit()->setFocus();
 }
 
 void
-MainWidgetSettingsSaver::saveSettings()
+MainWindowSettingsSaver::saveSettings()
 {
 	QSettings settings;
 
-	settings.setValue("mainWidget.geometry", mainWidget()->saveGeometry());
-	settings.setValue("mainWidget.knownSaltLineEdit.text", mainWidget()->knownSaltLineEdit()->text());
-	settings.setValue("mainWidget.knownHashLineEdit.text", mainWidget()->knownHashLineEdit()->text());
-	settings.setValue("mainWidget.passwordLineEdit.text", mainWidget()->passwordLineEdit()->text());
+	settings.setValue("mainWindow.geometry", mainWindow()->saveGeometry());
+	settings.setValue("mainWindow.knownSaltLineEdit.text", mainWindow()->knownSaltLineEdit()->text());
+	settings.setValue("mainWindow.knownHashLineEdit.text", mainWindow()->knownHashLineEdit()->text());
+	settings.setValue("mainWindow.passwordLineEdit.text", mainWindow()->passwordLineEdit()->text());
 }

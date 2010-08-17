@@ -1,9 +1,10 @@
-#include "MainWidget.h"
+#include "MainWindow.h"
 #include <QtCore/QCryptographicHash>
 #include <QtGui/QApplication>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
+#include <QtGui/QPushButton>
 
 namespace {
 
@@ -65,8 +66,8 @@ hash(const QByteArray &bytes)
 // ----------------------------------------------------------------------
 // -public
 
-MainWidget::MainWidget(QWidget *parent)
-	: QWidget(parent)
+MainWindow::MainWindow(QWidget *parent)
+	: QMainWindow(parent)
 #ifndef QT_NO_DEBUG
 	, m_knownSaltLineEdit(0)
 	, m_knownHashLineEdit(0)
@@ -81,7 +82,7 @@ MainWidget::MainWidget(QWidget *parent)
 // -privates-slots
 
 void
-MainWidget::syncHashLineEdit()
+MainWindow::syncHashLineEdit()
 {
 	QCryptographicHash md5(QCryptographicHash::Md5);
 	md5.addData(knownSaltLineEdit()->text().toAscii());
@@ -97,16 +98,17 @@ MainWidget::syncHashLineEdit()
 // -private
 
 void
-MainWidget::setup()
+MainWindow::setup()
 {
 	setupWidgets();
+	setupCentralWidget();
 	setWindowTitle(s("%1 %2")
 		.arg(qApp->applicationName())
 		.arg(qApp->applicationVersion()));
 }
 
 void
-MainWidget::setupWidgets()
+MainWindow::setupWidgets()
 {
 	Q_ASSERT(m_knownSaltLineEdit == 0);
 	m_knownSaltLineEdit = new QLineEdit;
@@ -131,14 +133,21 @@ MainWidget::setupWidgets()
 	hashLineEdit()->setReadOnly(true);
 
 	syncHashLineEdit();
+}
 
+void
+MainWindow::setupCentralWidget()
+{
 	QFormLayout *formLayout = new QFormLayout;
 	formLayout->addRow(tr("Known &Salt"), knownSaltLineEdit());
 	formLayout->addRow(tr("Known &Hash"), knownHashLineEdit());
 	formLayout->addRow(tr("&Password"), passwordLineEdit());
 	formLayout->addRow(tr("H&ash"), hashLineEdit());
 
-	setLayout(formLayout);
+	QWidget *centralWidge = new QWidget;
+	centralWidge->setLayout(formLayout);
+
+	setCentralWidget(centralWidge);
 }
 
 #if 0

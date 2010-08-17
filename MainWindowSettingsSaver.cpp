@@ -42,6 +42,7 @@ MainWindowSettingsSaver::loadSettings()
 	mainWindow()->knownSaltLineEdit()->setText(settings.value("mainWindow.knownSaltLineEdit.text").toString());
 	mainWindow()->knownHashLineEdit()->setText(settings.value("mainWindow.knownHashLineEdit.text").toString());
 	mainWindow()->passwordLineEdit()->setText(settings.value("mainWindow.passwordLineEdit.text").toString());
+	mainWindow()->setDbFileName(settings.value("mainWindow.dbFileName").toString());
 
 	mainWindow()->passwordLineEdit()->selectAll();
 	mainWindow()->passwordLineEdit()->setFocus();
@@ -56,4 +57,5 @@ MainWindowSettingsSaver::saveSettings()
 	settings.setValue("mainWindow.knownSaltLineEdit.text", mainWindow()->knownSaltLineEdit()->text());
 	settings.setValue("mainWindow.knownHashLineEdit.text", mainWindow()->knownHashLineEdit()->text());
 	settings.setValue("mainWindow.passwordLineEdit.text", mainWindow()->passwordLineEdit()->text());
+	settings.setValue("mainWindow.dbFileName", mainWindow()->dbFileName());
 }

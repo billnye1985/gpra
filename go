@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# go 0.0.1.10
+# go 0.0.1.12
 #
 # Just one command for building and executing Qt applications.
 #
@@ -76,6 +76,7 @@ distrib_pre:
 distrib: distrib_pre cleanall
 	cp -r . "/tmp/${application}-${version}"
 	rm -rf  "/tmp/${application}-${version}/.git"
+	rm -rf  "/tmp/${application}-${version}/.gitignore"
 
 	rm -rf "${application}-${version}"
 	mv "/tmp/${application}-${version}" "${application}-${version}"

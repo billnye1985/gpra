@@ -27,6 +27,9 @@ In order to make the tool useful you need google-chrome browser with the
 	'password_hash2' is your "Known Hash"
 	'salt2' is your "Known Salt"
 
+	Note that the password for this "Known Hash" and "Known Salt" is
+	'foobar'.
+
 After filling up "Known Hash" and "Known Salt" fields you can start
 typing passwords.  If you guessed password the program pops up dialog
 informing you about that:
@@ -39,8 +42,4 @@ informing you about that:
 	|                       |
 	|                 [OK]  |
 	`-----------------------'
-
-Hint:
-	The password for abovementioned "Known Hash" and "Known Salt" is
-	'foobar'.
 

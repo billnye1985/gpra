@@ -133,6 +133,14 @@ MainWindow::readKnowns()
 
 	const QString dbName = "BookmarkSyncSettings";
 
+	class RemoveDatabase {
+	public:
+		RemoveDatabase(const QString &dbName) { m_dbName = dbName; }
+		~RemoveDatabase() { QSqlDatabase::removeDatabase(m_dbName); }
+	private:
+		QString m_dbName;
+	} removeDatabase(dbName);
+
 	// Open DB
 	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", dbName);
 	db.setDatabaseName(dbFileName());
@@ -168,8 +176,6 @@ MainWindow::readKnowns()
 			knownSaltLineEdit()->setText(q.value(0).toString());
 		}
 	}
-
-	QSqlDatabase::removeDatabase(dbName);
 }
 
 void

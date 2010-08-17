@@ -1,10 +1,14 @@
 #include "MainWindow.h"
 #include <QtCore/QCryptographicHash>
 #include <QtGui/QApplication>
+#include <QtGui/QFileDialog>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMenuBar>
 #include <QtGui/QMessageBox>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlQuery>
 
 namespace {
 
@@ -102,8 +106,54 @@ MainWindow::syncHashLineEdit()
 void
 MainWindow::readKnowns()
 {
-	QMessageBox::critical(this, tr("Not Implemented"),
-		tr("readKnownsAction() Not Implemented"));
+	const QString defaultFileName = QDir::toNativeSeparators(s("%1/%2")
+		.arg(QDir::homePath())
+		.arg("/.config/google-chrome/Default/Sync Data/BookmarkSyncSettings.sqlite3"));
+
+	const QString fileName = QFileDialog::getOpenFileName(this,
+		tr("Open File"), defaultFileName,
+		tr("SQLite3 Files (*.sqlite3);;All Files (*)"));
+	if (fileName.isEmpty()) {
+		return;
+	}
+
+	const QString dbName = "BookmarkSyncSettings";
+
+	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", dbName);
+	db.setDatabaseName(fileName);
+	if (!db.open()) {
+		QMessageBox::warning(this, tr("Database Open Failed"),
+			db.lastError().text());
+		return;
+	}
+
+	{
+		QSqlQuery q(db);
+
+		// password_hash
+		if (!q.exec("SELECT value FROM settings WHERE key='password_hash2'")) {
+			QMessageBox::warning(this,
+				tr("Querying 'password_hash2' failed"),
+				q.lastError().text());
+		}
+		else {
+			q.first();
+			knownHashLineEdit()->setText(q.value(0).toString());
+		}
+
+		// salt2
+		if (!q.exec("SELECT value FROM settings WHERE key='salt2'")) {
+			QMessageBox::warning(this,
+				tr("Querying 'salt2' failed"),
+				q.lastError().text());
+		}
+		else {
+			q.first();
+			knownSaltLineEdit()->setText(q.value(0).toString());
+		}
+	}
+
+	QSqlDatabase::removeDatabase(dbName);
 }
 
 void

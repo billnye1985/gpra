@@ -109,8 +109,14 @@ MainWindow::readKnowns()
 void
 MainWindow::about()
 {
-	QMessageBox::critical(this, tr("Not Implemented"),
-		tr("about() Not Implemented"));
+	const QString html = tr(
+"<p><b>G</b>mail <b>P</b>assword <b>R</b>ecovery <b>A</b>ssistant</p>"
+"<p><a href='http://github.com/vbarbarosh/gpra'>gpra</a> v%1</p>"
+"<p>Developed by <a href='mailto:vladimir.barbarosh@gmail.com'>Vladimir Barbarosh</a></p>"
+);
+
+	QMessageBox::information(this, tr("About"),
+		html.arg(qApp->applicationVersion()));
 }
 
 // ----------------------------------------------------------------------

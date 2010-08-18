@@ -95,8 +95,14 @@ MainWindow::dbFileName() const
 
 	const QString defaultDbFileName
 		= QDir::homePath()
+#ifdef Q_WS_WIN
+		// FIXME  This is not right method to obtain
+		//        "Application Data" directory location.  Have a
+		//        look to some WinAPI.
+		+ "\\Local Settings\\Application Data\\Google\\Chrome\\User Data\\Default\\Sync Data\\BookmarkSyncSettings.sqlite3";
+#else
 		+ "/.config/google-chrome/Default/Sync Data/BookmarkSyncSettings.sqlite3";
-
+#endif
 	return defaultDbFileName;
 }
 

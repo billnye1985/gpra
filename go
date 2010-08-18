@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# go 0.0.1.13
+# go 0.0.1_r14
 #
 # Just one command for building and executing Qt applications.
 #
@@ -19,8 +19,8 @@
 # Name of the application
 application=gpra
 
-# Version of the application (must be tagged with vx.y.z tags)
-version=`git tag | grep ^v[0-9]\\\\+ | tail -n1 | cut -dv -f2`.`git log | grep ^commit | wc -l`
+# Version of the application (vx.y.z_r<revision>)
+version=`git tag | grep ^v[0-9]\\\\+ | tail -n1 | cut -dv -f2`_r`git log | grep ^commit | wc -l`
 
 # Name of the organization which developed this application
 organization=vladimir.barbarosh@gmail.com

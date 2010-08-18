@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# go 0.0.1_r14
+# go 0.0.1_r18
 #
 # Just one command for building and executing Qt applications.
 #
@@ -91,9 +91,16 @@ fi
 
 # 2.  Generate Qt project file
 qmake -project -o "$application".pro
-cat >> "${application}.pro" << EOF
+cat >> "$application.pro" << EOF
 
-VERSION = ${version}
+VERSION = $(
+	v=$(echo $version | cut -d_ -f1)
+	r=$(echo $version | cut -dr -f2)
+	x=$(echo $v.0.0 | cut -d. -f1)
+	y=$(echo $v.0.0 | cut -d. -f2)
+	z=$(echo $v.0.0 | cut -d. -f3)
+	echo $x.$y.$z.$r
+)
 
 # -------------------------------------------
 # Qt Modules for general software development
@@ -137,35 +144,31 @@ qmake
 	# 3.1.  Add 'cleanall' rule to the Makefile
 	cat >> Makefile <<EOF
 cleanall: distclean
-	rm -f "${application}.pro"
+	rm -f "$application.pro"
 	rm -f go_settings.inc
-	rm -f "${application}-${version}.tar.gz"
+	rm -f "$application-$version.tar.gz"
 
 EOF
 
 	# 3.2  Add 'distrib' rule to the Makefile
 	cat >> Makefile <<EOF
 distrib_pre:
-	rm -rf "/tmp/${application}-${version}"
-	mkdir  "/tmp/${application}-${version}"
-
-	# Make "release" .pro file
-	echo >> "${application}.pro"
-	echo "CONFIG += release" >> "${application}.pro"
+	rm -rf "/tmp/$application-$version"
+	mkdir  "/tmp/$application-$version"
 
 	# Preserve some generated files
-	cp "${application}.pro" go_settings.inc "/tmp/${application}-${version}"
+	cp "$application.pro" go_settings.inc "/tmp/$application-$version"
 
 distrib: distrib_pre cleanall
-	cp -r . "/tmp/${application}-${version}"
-	rm -rf  "/tmp/${application}-${version}/.git"
-	rm -rf  "/tmp/${application}-${version}/.gitignore"
+	cp -r . "/tmp/$application-$version"
+	rm -rf  "/tmp/$application-$version/.git"
+	rm -rf  "/tmp/$application-$version/.gitignore"
 
-	rm -rf "${application}-${version}"
-	mv "/tmp/${application}-${version}" "${application}-${version}"
+	rm -rf "$application-$version"
+	mv "/tmp/$application-$version" "$application-$version"
 
-	tar cavf "${application}-${version}.tar.gz" "${application}-${version}"
-	rm -rf "${application}-${version}"
+	tar cavf "$application-$version.tar.gz" "$application-$version"
+	rm -rf "$application-$version"
 
 EOF
 
